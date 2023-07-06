@@ -3,10 +3,11 @@ package com.example.travelapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.travelapp.commons.Routes
+import com.example.travelapp.login.ui.StartScreen
 import com.example.travelapp.ui.theme.TravelAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -14,23 +15,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TravelAppTheme {
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = "start_screen",
+                ) {
+                    composable(route = Routes.StartScreen.route) {
+                        StartScreen()
+                    }
+                }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TravelAppTheme {
-        Greeting("Android")
     }
 }
