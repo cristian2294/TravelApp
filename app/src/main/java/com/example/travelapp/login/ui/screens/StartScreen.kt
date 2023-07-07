@@ -1,4 +1,4 @@
-package com.example.travelapp.login.ui
+package com.example.travelapp.login.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,15 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import com.example.travelapp.R
+import com.example.travelapp.commons.Routes
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun StartScreen() {
+fun StartScreen(navController: NavController) {
     ConstraintLayout(modifier = Modifier.fillMaxSize().background(Color(0xFFFFF3E8))) {
         val (
             txtAppName,
@@ -62,6 +62,7 @@ fun StartScreen() {
         )
 
         ButtonSignUp(
+            navController,
             Modifier.constrainAs(btnSignUp) {
                 top.linkTo(subtitleApp.bottom, margin = 52.dp)
                 start.linkTo(startGuideLine)
@@ -122,10 +123,10 @@ fun SubtitleApp(modifier: Modifier) {
 }
 
 @Composable
-fun ButtonSignUp(modifier: Modifier) {
+fun ButtonSignUp(navController: NavController, modifier: Modifier) {
     Button(
         onClick = {
-            // implement sign up logic
+            navController.navigate(Routes.SignUpScreen.route)
         },
         // validate weight for the button
         modifier = modifier.width(300.dp),
@@ -134,7 +135,7 @@ fun ButtonSignUp(modifier: Modifier) {
         ),
         elevation = ButtonDefaults.buttonElevation(8.dp),
     ) {
-        Text(text = "Sign Up")
+        Text(text = "Sign Up", fontSize = 14.sp)
     }
 }
 
