@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,6 +26,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +37,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -110,13 +117,18 @@ fun TxvTitleScreen(modifier: Modifier) {
 }
 
 @Composable
-fun BodySignUp(modifier: Modifier) {
+fun BodySignUp(
+    modifier: Modifier,
+) {
+    var name by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     Column(modifier = modifier) {
-        NameComponent(modifier)
+        NameComponent(name, modifier) { name = it }
         Spacer(modifier = modifier.padding(top = 12.dp))
-        EmailComponent(modifier)
+        EmailComponent(email, modifier) { email = it }
         Spacer(modifier = modifier.padding(top = 12.dp))
-        PasswordComponent(modifier)
+        PasswordComponent(password, modifier) { password = it }
         Spacer(modifier = modifier.padding(top = 48.dp))
         BtnCreateAccount(modifier)
         Spacer(modifier = modifier.padding(top = 24.dp))
@@ -128,13 +140,17 @@ fun BodySignUp(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NameComponent(modifier: Modifier) {
+fun NameComponent(
+    name: String,
+    modifier: Modifier,
+    onValueChange: (String) -> Unit,
+) {
     OutlinedTextField(
-        value = "",
+        value = name,
         label = {
-            Text(text = "Name")
+            Text(text = "Name", color = Color(0xFF382A12))
         },
-        onValueChange = {},
+        onValueChange = { onValueChange(it) },
         maxLines = 1,
         singleLine = true,
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
@@ -149,13 +165,17 @@ fun NameComponent(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailComponent(modifier: Modifier) {
+fun EmailComponent(
+    email: String,
+    modifier: Modifier,
+    onValueChange: (String) -> Unit,
+) {
     OutlinedTextField(
-        value = "",
+        value = email,
         label = {
-            Text(text = "Email")
+            Text(text = "Email", color = Color(0xFF382A12))
         },
-        onValueChange = {},
+        onValueChange = { onValueChange(it) },
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -171,16 +191,21 @@ fun EmailComponent(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordComponent(modifier: Modifier) {
+fun PasswordComponent(
+    password: String,
+    modifier: Modifier,
+    onValueChange: (String) -> Unit,
+) {
+    var passwordVisibility by rememberSaveable { mutableStateOf(false) }
     OutlinedTextField(
-        value = "",
+        value = password,
         label = {
-            Text(text = "Password")
+            Text(text = "Password", color = Color(0xFF382A12))
         },
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        onValueChange = {},
+        onValueChange = { onValueChange(it) },
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(0xFF382A12),
@@ -189,14 +214,22 @@ fun PasswordComponent(modifier: Modifier) {
             unfocusedLabelColor = Color.Gray,
         ),
         trailingIcon = {
-            // Change for implement functionality when touch icon
-            IconButton(onClick = { }) {
+            IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                 Icon(
-                    imageVector = Icons.Filled.VisibilityOff,
+                    imageVector = if (passwordVisibility) {
+                        Icons.Filled.VisibilityOff
+                    } else {
+                        Icons.Filled.Visibility
+                    },
                     contentDescription = "show password",
                     tint = Color(0xFF382A12),
                 )
             }
+        },
+        visualTransformation = if (passwordVisibility) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
         },
     )
 }

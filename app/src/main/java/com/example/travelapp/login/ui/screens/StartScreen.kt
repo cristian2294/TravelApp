@@ -37,9 +37,9 @@ fun StartScreen(navController: NavController) {
         ) = createRefs()
         val startGuideLine = createGuidelineFromStart(0.1f)
         val endGuideLine = createGuidelineFromEnd(0.1f)
-        TitleApp(
+        LogoApp(
             Modifier.constrainAs(txtAppName) {
-                top.linkTo(parent.top, margin = 64.dp)
+                top.linkTo(parent.top, margin = 8.dp)
                 start.linkTo(parent.start, margin = 16.dp)
                 end.linkTo(parent.end, margin = 16.dp)
             },
@@ -47,7 +47,7 @@ fun StartScreen(navController: NavController) {
 
         ImageLogo(
             Modifier.constrainAs(imageSplash) {
-                top.linkTo(txtAppName.bottom, margin = 48.dp)
+                top.linkTo(txtAppName.bottom, margin = 2.dp)
                 start.linkTo(parent.start, margin = 16.dp)
                 end.linkTo(parent.end, margin = 16.dp)
             },
@@ -89,14 +89,11 @@ fun StartScreen(navController: NavController) {
 }
 
 @Composable
-fun TitleApp(modifier: Modifier) {
-    Text(
-        text = "TravelApp",
-        modifier = modifier,
-        fontSize = 22.sp,
-        fontWeight = FontWeight.SemiBold,
-        fontFamily = FontFamily.SansSerif,
-        color = Color(0xFF382A12),
+fun LogoApp(modifier: Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.logo_travel),
+        contentDescription = "logo",
+        modifier = modifier.size(200.dp),
     )
 }
 
@@ -106,7 +103,7 @@ fun ImageLogo(modifier: Modifier) {
         painter = painterResource(id = R.drawable.ic_explore_logo),
         contentDescription = "image Login",
         modifier = modifier
-            .size(240.dp),
+            .size(180.dp),
     )
 }
 
@@ -128,7 +125,6 @@ fun ButtonSignUp(navController: NavController, modifier: Modifier) {
         onClick = {
             navController.navigate(Routes.SignUpScreen.route)
         },
-        // validate weight for the button
         modifier = modifier.width(300.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFF9A826),
