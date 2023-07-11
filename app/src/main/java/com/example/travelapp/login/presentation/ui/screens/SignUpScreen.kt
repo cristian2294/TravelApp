@@ -1,5 +1,6 @@
-package com.example.travelapp.login.ui.screens
+package com.example.travelapp.login.presentation.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,12 +28,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -45,9 +48,14 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.travelapp.R
+import com.example.travelapp.commons.Routes
+import com.example.travelapp.login.presentation.ui.viewmodel.SignUpViewModel
 
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(
+    navController: NavController,
+    signUpViewModel: SignUpViewModel,
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -62,20 +70,26 @@ fun SignUpScreen(navController: NavController) {
 
         BackArrow(
             navController,
-            Modifier.padding(top = 16.dp).constrainAs(icBackArrow) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-            },
+            Modifier
+                .padding(top = 16.dp)
+                .constrainAs(icBackArrow) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                },
         )
 
         TxvTitleScreen(
-            Modifier.padding(top = 16.dp).constrainAs(txvTitleScreen) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            },
+            Modifier
+                .padding(top = 16.dp)
+                .constrainAs(txvTitleScreen) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
         )
         BodySignUp(
+            signUpViewModel,
+            navController,
             Modifier.constrainAs(containerBody) {
                 top.linkTo(txvTitleScreen.bottom, margin = 48.dp)
                 start.linkTo(parent.start)
@@ -83,6 +97,7 @@ fun SignUpScreen(navController: NavController) {
             },
         )
         AlreadyHaveAccount(
+            navController,
             Modifier.constrainAs(txvAlreadyHaveAccount) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
@@ -118,19 +133,28 @@ fun TxvTitleScreen(modifier: Modifier) {
 
 @Composable
 fun BodySignUp(
+    signUpViewModel: SignUpViewModel,
+    navController: NavController,
     modifier: Modifier,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+    val email by signUpViewModel.email.observeAsState(initial = "")
+    val password by signUpViewModel.password.observeAsState(initial = "")
     Column(modifier = modifier) {
         NameComponent(name, modifier) { name = it }
         Spacer(modifier = modifier.padding(top = 12.dp))
-        EmailComponent(email, modifier) { email = it }
+        EmailComponent(email, modifier) { signUpViewModel.onSignUpChanged(it, password) }
         Spacer(modifier = modifier.padding(top = 12.dp))
-        PasswordComponent(password, modifier) { password = it }
+        PasswordComponent(password, modifier) { signUpViewModel.onSignUpChanged(email, it) }
         Spacer(modifier = modifier.padding(top = 48.dp))
-        BtnCreateAccount(modifier)
+        BtnCreateAccount(
+            name,
+            email,
+            password,
+            signUpViewModel,
+            navController,
+            modifier,
+        )
         Spacer(modifier = modifier.padding(top = 24.dp))
         ContinueWithComponent(modifier)
         Spacer(modifier = modifier.padding(top = 24.dp))
@@ -153,7 +177,9 @@ fun NameComponent(
         onValueChange = { onValueChange(it) },
         maxLines = 1,
         singleLine = true,
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(0xFF382A12),
             unfocusedBorderColor = Color.Gray,
@@ -179,7 +205,9 @@ fun EmailComponent(
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(0xFF382A12),
             unfocusedBorderColor = Color.Gray,
@@ -206,7 +234,9 @@ fun PasswordComponent(
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         onValueChange = { onValueChange(it) },
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(0xFF382A12),
             unfocusedBorderColor = Color.Gray,
@@ -235,10 +265,21 @@ fun PasswordComponent(
 }
 
 @Composable
-fun BtnCreateAccount(modifier: Modifier) {
+fun BtnCreateAccount(
+    name: String,
+    email: String,
+    password: String,
+    signUpViewModel: SignUpViewModel,
+    navController: NavController,
+    modifier: Modifier,
+) {
+    val context = LocalContext.current
     Button(
         onClick = {
-            // implement create account logic
+            signUpViewModel.onSignUpClickListener(
+                { navController.navigate(Routes.HomeScreen.route) },
+                { Toast.makeText(context, "Ha Ocurrido un error", Toast.LENGTH_SHORT).show() },
+            )
         },
         modifier = modifier
             .fillMaxWidth()
@@ -255,7 +296,9 @@ fun BtnCreateAccount(modifier: Modifier) {
 @Composable
 fun ContinueWithComponent(modifier: Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Divider(
@@ -283,7 +326,9 @@ fun ContinueWithComponent(modifier: Modifier) {
 @Composable
 fun SocialMediaAccount(modifier: Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {

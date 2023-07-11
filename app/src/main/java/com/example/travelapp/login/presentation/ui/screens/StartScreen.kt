@@ -1,7 +1,8 @@
-package com.example.travelapp.login.ui.screens
+package com.example.travelapp.login.presentation.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -71,6 +72,7 @@ fun StartScreen(navController: NavController) {
         )
 
         AlreadyHaveAccount(
+            navController,
             Modifier.constrainAs(txtAlreadyHaveAccount) {
                 top.linkTo(btnSignUp.bottom, margin = 12.dp)
                 start.linkTo(btnSignUp.start, margin = 16.dp)
@@ -136,7 +138,7 @@ fun ButtonSignUp(navController: NavController, modifier: Modifier) {
 }
 
 @Composable
-fun AlreadyHaveAccount(modifier: Modifier) {
+fun AlreadyHaveAccount(navController: NavController, modifier: Modifier) {
     Row(modifier = modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
         Text(
             text = "Already have account?",
@@ -147,11 +149,13 @@ fun AlreadyHaveAccount(modifier: Modifier) {
         )
         Text(
             text = "Log in",
-            modifier = modifier.padding(start = 4.dp),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif,
             color = Color(0xFF382A12),
+            modifier = modifier
+                .padding(start = 4.dp)
+                .clickable { navController.navigate(Routes.LoginScreen.route) },
         )
     }
 }
