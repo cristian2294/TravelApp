@@ -59,7 +59,6 @@ fun SignUpScreen(
     navController: NavController,
     signUpViewModel: SignUpViewModel,
 ) {
-    validateNavigationUser(signUpViewModel, navController)
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -109,12 +108,6 @@ fun SignUpScreen(
             },
         )
     }
-}
-
-fun validateNavigationUser(signUpViewModel: SignUpViewModel, navController: NavController) {
-    signUpViewModel.isUserLogged(
-        navigateToHome = { navController.navigate(Routes.HomeScreen.route) },
-    )
 }
 
 @Composable
