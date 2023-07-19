@@ -14,8 +14,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,7 +29,11 @@ import com.example.travelapp.commons.Routes
 
 @Composable
 fun StartScreen(navController: NavController) {
-    ConstraintLayout(modifier = Modifier.fillMaxSize().background(Color(0xFFFFF3E8))) {
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize().background(
+            colorResource(id = R.color.orange_200),
+        ),
+    ) {
         val (
             txtAppName,
             subtitleApp,
@@ -95,7 +101,7 @@ fun LogoApp(modifier: Modifier) {
     Image(
         painter = painterResource(id = R.drawable.logo_travel),
         contentDescription = "logo",
-        modifier = modifier.size(200.dp),
+        modifier = modifier.size(dimensionResource(id = R.dimen.dimen_200dp)),
     )
 }
 
@@ -104,20 +110,19 @@ fun ImageLogo(modifier: Modifier) {
     Image(
         painter = painterResource(id = R.drawable.ic_explore_logo),
         contentDescription = "image Login",
-        modifier = modifier
-            .size(180.dp),
+        modifier = modifier.size(dimensionResource(id = R.dimen.dimen_180dp)),
     )
 }
 
 @Composable
 fun SubtitleApp(modifier: Modifier) {
     Text(
-        text = "are you looking for new adventures?",
+        text = stringResource(id = R.string.start_description),
         modifier = modifier,
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.SansSerif,
-        color = Color(0xFF382A12),
+        color = colorResource(id = R.color.brown_700),
     )
 }
 
@@ -129,11 +134,11 @@ fun ButtonSignUp(navController: NavController, modifier: Modifier) {
         },
         modifier = modifier.width(300.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFF9A826),
+            containerColor = colorResource(id = R.color.orange_900),
         ),
-        elevation = ButtonDefaults.buttonElevation(8.dp),
+        elevation = ButtonDefaults.buttonElevation(dimensionResource(id = R.dimen.dimen_8dp)),
     ) {
-        Text(text = "Sign Up", fontSize = 14.sp)
+        Text(text = stringResource(id = R.string.start_button_sign_up), fontSize = 14.sp)
     }
 }
 
@@ -141,18 +146,18 @@ fun ButtonSignUp(navController: NavController, modifier: Modifier) {
 fun AlreadyHaveAccount(navController: NavController, modifier: Modifier) {
     Row(modifier = modifier.fillMaxSize(), horizontalArrangement = Arrangement.Center) {
         Text(
-            text = "Already have account?",
+            text = stringResource(id = R.string.start_already_have_account),
             modifier = modifier,
             fontSize = 14.sp,
             fontFamily = FontFamily.SansSerif,
-            color = Color(0xFF382A12),
+            color = colorResource(id = R.color.brown_700),
         )
         Text(
-            text = "Log in",
+            text = stringResource(id = R.string.start_already_have_account_login),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif,
-            color = Color(0xFF382A12),
+            color = colorResource(id = R.color.brown_700),
             modifier = modifier
                 .padding(start = 4.dp)
                 .clickable { navController.navigate(Routes.LoginScreen.route) },
@@ -163,10 +168,10 @@ fun AlreadyHaveAccount(navController: NavController, modifier: Modifier) {
 @Composable
 fun VersionApp(modifier: Modifier) {
     Text(
-        text = "V 1.0.0",
+        text = stringResource(id = R.string.start_version),
         modifier = modifier,
         fontSize = 14.sp,
         fontFamily = FontFamily.SansSerif,
-        color = Color(0xFF382A12),
+        color = colorResource(id = R.color.brown_700),
     )
 }

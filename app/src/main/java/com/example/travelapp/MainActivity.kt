@@ -12,6 +12,7 @@ import com.example.travelapp.login.presentation.ui.screens.HomeScreen
 import com.example.travelapp.login.presentation.ui.screens.LoginScreen
 import com.example.travelapp.login.presentation.ui.screens.SignUpScreen
 import com.example.travelapp.login.presentation.ui.screens.StartScreen
+import com.example.travelapp.login.presentation.ui.viewmodel.LoginViewModel
 import com.example.travelapp.login.presentation.ui.viewmodel.SignUpViewModel
 import com.example.travelapp.ui.theme.TravelAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val signUpViewModel: SignUpViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -36,9 +38,16 @@ class MainActivity : ComponentActivity() {
                             signUpViewModel,
                         )
                     }
-                    composable(route = Routes.LoginScreen.route) { LoginScreen(navController) }
+                    composable(route = Routes.LoginScreen.route) {
+                        LoginScreen(
+                            navController,
+                            loginViewModel,
+                        )
+                    }
                     composable(route = Routes.HomeScreen.route) { HomeScreen() }
                 }
+                // When user already logged navigate to homeScreen directly
+                //signUpViewModel.isUserLogged { navController.navigate(Routes.HomeScreen.route) }
             }
         }
     }

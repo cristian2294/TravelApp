@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.travelapp.login.domain.usecase.SignUpUseCase
-import com.example.travelapp.login.presentation.states.SignUpState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
 ) : ViewModel() {
+
+    private val _name = MutableLiveData<String>()
+    val name: LiveData<String> get() = _name
 
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> get() = _email
@@ -26,38 +26,52 @@ class SignUpViewModel @Inject constructor(
     private val _isLoginEnabled = MutableLiveData<Boolean>()
     val isLoginEnabled: LiveData<Boolean> get() = _isLoginEnabled
 
-    private val _stateSignUpEmail = MutableLiveData<SignUpState>()
-    val stateSignUpEmail: LiveData<SignUpState> get() = _stateSignUpEmail
+    private val _isLoading = MutableLiveData<Boolean>(false)
 
     fun onSignUpClickListener(
         navigateToHome: () -> Unit,
         showSignUpError: () -> Unit,
     ) {
-        viewModelScope.launch {
-            _stateSignUpEmail.postValue(SignUpState.Loading)
-            withContext(Dispatchers.IO) {
-                val result = signUpUseCase.isLoginWithEmailAndPasswordEnabled(
+        if (_isLoading.value == false) {
+            _isLoading.value = true
+
+            viewModelScope.launch {
+                val result = signUpUseCase.isSignUpWithEmailAndPasswordEnabled(
                     email.value ?: "",
                     password.value ?: "",
                 )
                 if (result) {
                     signUpUseCase.registerUserWithEmailAndPassword(
+                        name.value ?: "",
                         email.value ?: "",
                         password.value ?: "",
                         navigateToHome,
                         showSignUpError,
                     )
-                    _stateSignUpEmail.postValue(SignUpState.Success)
                 } else {
-                    _stateSignUpEmail.postValue(SignUpState.Error("Por favor, complete todos los campos."))
+                    showSignUpError()
                 }
             }
+            _isLoading.value = false
         }
     }
 
-    fun onSignUpChanged(email: String, password: String) {
+    fun onSignUpChanged(
+        name: String,
+        email: String,
+        password: String,
+    ) {
+        _name.value = name
         _email.value = email
         _password.value = password
-        _isLoginEnabled.value = signUpUseCase.isLoginWithEmailAndPasswordEnabled(email, password)
+        _isLoginEnabled.value = signUpUseCase.isSignUpWithEmailAndPasswordEnabled(email, password)
+    }
+
+    fun isUserLogged(
+        navigateToHome: () -> Unit,
+    ) {
+        if (signUpUseCase.isUserLogged()) {
+            navigateToHome()
+        }
     }
 }

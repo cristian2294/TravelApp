@@ -36,7 +36,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -56,10 +59,11 @@ fun SignUpScreen(
     navController: NavController,
     signUpViewModel: SignUpViewModel,
 ) {
+    validateNavigationUser(signUpViewModel, navController)
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFF3E8)),
+            .background(colorResource(id = R.color.orange_200)),
     ) {
         val (
             icBackArrow,
@@ -71,7 +75,7 @@ fun SignUpScreen(
         BackArrow(
             navController,
             Modifier
-                .padding(top = 16.dp)
+                .padding(top = dimensionResource(id = R.dimen.dimen_16dp))
                 .constrainAs(icBackArrow) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -80,7 +84,7 @@ fun SignUpScreen(
 
         TxvTitleScreen(
             Modifier
-                .padding(top = 16.dp)
+                .padding(top = dimensionResource(id = R.dimen.dimen_16dp))
                 .constrainAs(txvTitleScreen) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -107,13 +111,19 @@ fun SignUpScreen(
     }
 }
 
+fun validateNavigationUser(signUpViewModel: SignUpViewModel, navController: NavController) {
+    signUpViewModel.isUserLogged(
+        navigateToHome = { navController.navigate(Routes.HomeScreen.route) },
+    )
+}
+
 @Composable
 fun BackArrow(navController: NavController, modifier: Modifier) {
     Icon(
         imageVector = Icons.Default.ArrowBack,
         contentDescription = "back arrow",
         modifier = modifier
-            .padding(start = 16.dp)
+            .padding(start = dimensionResource(id = R.dimen.dimen_16dp))
             .clickable { navController.popBackStack() },
     )
 }
@@ -121,13 +131,13 @@ fun BackArrow(navController: NavController, modifier: Modifier) {
 @Composable
 fun TxvTitleScreen(modifier: Modifier) {
     Text(
-        text = "Sign Up",
+        text = stringResource(id = R.string.sign_up_title),
         textAlign = TextAlign.Center,
         modifier = modifier,
         fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold,
         fontFamily = FontFamily.SansSerif,
-        color = Color(0xFF382A12),
+        color = colorResource(id = R.color.brown_700),
     )
 }
 
@@ -137,27 +147,42 @@ fun BodySignUp(
     navController: NavController,
     modifier: Modifier,
 ) {
-    var name by rememberSaveable { mutableStateOf("") }
+    val name by signUpViewModel.name.observeAsState(initial = "")
     val email by signUpViewModel.email.observeAsState(initial = "")
     val password by signUpViewModel.password.observeAsState(initial = "")
     Column(modifier = modifier) {
-        NameComponent(name, modifier) { name = it }
-        Spacer(modifier = modifier.padding(top = 12.dp))
-        EmailComponent(email, modifier) { signUpViewModel.onSignUpChanged(it, password) }
-        Spacer(modifier = modifier.padding(top = 12.dp))
-        PasswordComponent(password, modifier) { signUpViewModel.onSignUpChanged(email, it) }
-        Spacer(modifier = modifier.padding(top = 48.dp))
+        NameComponent(name, modifier) {
+            signUpViewModel.onSignUpChanged(
+                it,
+                email,
+                password,
+            )
+        }
+        Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_12dp)))
+        EmailComponent(email, modifier) {
+            signUpViewModel.onSignUpChanged(
+                name,
+                it,
+                password,
+            )
+        }
+        Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_12dp)))
+        PasswordComponent(password, modifier) {
+            signUpViewModel.onSignUpChanged(
+                name,
+                email,
+                it,
+            )
+        }
+        Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_48dp)))
         BtnCreateAccount(
-            name,
-            email,
-            password,
             signUpViewModel,
             navController,
             modifier,
         )
-        Spacer(modifier = modifier.padding(top = 24.dp))
+        Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_24dp)))
         ContinueWithComponent(modifier)
-        Spacer(modifier = modifier.padding(top = 24.dp))
+        Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_24dp)))
         SocialMediaAccount(modifier)
     }
 }
@@ -172,18 +197,23 @@ fun NameComponent(
     OutlinedTextField(
         value = name,
         label = {
-            Text(text = "Name", color = Color(0xFF382A12))
+            Text(
+                text = stringResource(
+                    id = R.string.sign_up_outlined_text_name,
+                ),
+                color = colorResource(id = R.color.brown_700),
+            )
         },
         onValueChange = { onValueChange(it) },
         maxLines = 1,
         singleLine = true,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.dimen_16dp)),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(0xFF382A12),
+            focusedBorderColor = colorResource(id = R.color.brown_700),
             unfocusedBorderColor = Color.Gray,
-            focusedLabelColor = Color(0xFF382A12),
+            focusedLabelColor = colorResource(id = R.color.brown_700),
             unfocusedLabelColor = Color.Gray,
         ),
     )
@@ -199,7 +229,12 @@ fun EmailComponent(
     OutlinedTextField(
         value = email,
         label = {
-            Text(text = "Email", color = Color(0xFF382A12))
+            Text(
+                text = stringResource(
+                    id = R.string.sign_up_outlined_text_email,
+                ),
+                color = colorResource(id = R.color.brown_700),
+            )
         },
         onValueChange = { onValueChange(it) },
         maxLines = 1,
@@ -207,11 +242,11 @@ fun EmailComponent(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.dimen_16dp)),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(0xFF382A12),
+            focusedBorderColor = colorResource(id = R.color.brown_700),
             unfocusedBorderColor = Color.Gray,
-            focusedLabelColor = Color(0xFF382A12),
+            focusedLabelColor = colorResource(id = R.color.brown_700),
             unfocusedLabelColor = Color.Gray,
         ),
     )
@@ -228,7 +263,10 @@ fun PasswordComponent(
     OutlinedTextField(
         value = password,
         label = {
-            Text(text = "Password", color = Color(0xFF382A12))
+            Text(
+                text = stringResource(id = R.string.sign_up_outlined_text_password),
+                color = colorResource(id = R.color.brown_700),
+            )
         },
         maxLines = 1,
         singleLine = true,
@@ -236,11 +274,11 @@ fun PasswordComponent(
         onValueChange = { onValueChange(it) },
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.dimen_16dp)),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color(0xFF382A12),
+            focusedBorderColor = colorResource(id = R.color.brown_700),
             unfocusedBorderColor = Color.Gray,
-            focusedLabelColor = Color(0xFF382A12),
+            focusedLabelColor = colorResource(id = R.color.brown_700),
             unfocusedLabelColor = Color.Gray,
         ),
         trailingIcon = {
@@ -252,7 +290,7 @@ fun PasswordComponent(
                         Icons.Filled.Visibility
                     },
                     contentDescription = "show password",
-                    tint = Color(0xFF382A12),
+                    tint = colorResource(id = R.color.brown_700),
                 )
             }
         },
@@ -266,30 +304,35 @@ fun PasswordComponent(
 
 @Composable
 fun BtnCreateAccount(
-    name: String,
-    email: String,
-    password: String,
     signUpViewModel: SignUpViewModel,
     navController: NavController,
     modifier: Modifier,
 ) {
+    val isLoginEnabled by signUpViewModel.isLoginEnabled.observeAsState(initial = false)
     val context = LocalContext.current
     Button(
         onClick = {
             signUpViewModel.onSignUpClickListener(
                 { navController.navigate(Routes.HomeScreen.route) },
-                { Toast.makeText(context, "Ha Ocurrido un error", Toast.LENGTH_SHORT).show() },
+                {
+                    Toast.makeText(
+                        context,
+                        R.string.sign_up_error_dialog_description,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                },
             )
         },
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.dimen_24dp)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFF9A826),
+            containerColor = colorResource(id = R.color.orange_900),
         ),
-        elevation = ButtonDefaults.buttonElevation(8.dp),
+        elevation = ButtonDefaults.buttonElevation(dimensionResource(id = R.dimen.dimen_8dp)),
+        enabled = isLoginEnabled,
     ) {
-        Text(text = "Create Account", fontSize = 14.sp)
+        Text(text = stringResource(id = R.string.sign_up_button_create_account), fontSize = 14.sp)
     }
 }
 
@@ -298,26 +341,26 @@ fun ContinueWithComponent(modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.dimen_24dp)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Divider(
             modifier = Modifier
-                .background(Color(0xFF382A12))
-                .height(1.dp)
+                .background(colorResource(id = R.color.brown_700))
+                .height(dimensionResource(id = R.dimen.dimen_1dp))
                 .weight(1f),
         )
         Text(
             text = "Or continue with",
-            Modifier.padding(horizontal = 8.dp),
+            Modifier.padding(horizontal = dimensionResource(id = R.dimen.dimen_8dp)),
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF382A12),
+            color = colorResource(id = R.color.brown_700),
         )
         Divider(
             modifier = Modifier
-                .background(Color(0xFF382A12))
-                .height(1.dp)
+                .background(colorResource(id = R.color.brown_700))
+                .height(dimensionResource(id = R.dimen.dimen_1dp))
                 .weight(1f),
         )
     }
@@ -328,11 +371,15 @@ fun SocialMediaAccount(modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.dimen_24dp)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        IconButton(onClick = { }, modifier = modifier.padding(end = 16.dp)) {
+        IconButton(
+            onClick = { },
+            modifier = modifier
+                .padding(end = dimensionResource(id = R.dimen.dimen_16dp)),
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_google),
                 contentDescription = "Login with Google",
