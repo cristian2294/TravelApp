@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     composable(route = Routes.HomeScreen.route) { HomeScreen() }
                 }
                 // When user already logged navigate to homeScreen directly
-                //signUpViewModel.isUserLogged { navController.navigate(Routes.HomeScreen.route) }
+                // signUpViewModel.isUserLogged { navController.navigate(Routes.HomeScreen.route) }
             }
         }
     }
