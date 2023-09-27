@@ -103,7 +103,7 @@ fun BodyLogIn(
         Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_48dp)))
         BtnLogIn(navController, loginViewModel, modifier)
         Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_8dp)))
-        ForgotPassword(modifier)
+        ForgotPassword(navController, modifier)
         Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_24dp)))
         ContinueWithComponent(modifier)
         Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_24dp)))
@@ -142,7 +142,7 @@ fun BtnLogIn(navController: NavController, loginViewModel: LoginViewModel, modif
 }
 
 @Composable
-fun ForgotPassword(modifier: Modifier) {
+fun ForgotPassword(navController: NavController, modifier: Modifier) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -151,10 +151,14 @@ fun ForgotPassword(modifier: Modifier) {
     ) {
         Text(
             text = stringResource(id = R.string.login_forgot_password),
-            modifier = modifier.padding(end = dimensionResource(id = R.dimen.dimen_16dp)),
             fontSize = 14.sp,
             color = colorResource(id = R.color.brown_700),
             fontWeight = FontWeight.Bold,
+            modifier = modifier
+                .padding(end = dimensionResource(id = R.dimen.dimen_16dp))
+                .clickable {
+                    navController.navigate(Routes.ForgotPasswordScreen.route)
+                },
         )
     }
 }
