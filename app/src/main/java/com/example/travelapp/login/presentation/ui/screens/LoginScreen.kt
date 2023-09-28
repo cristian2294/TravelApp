@@ -33,6 +33,10 @@ import androidx.navigation.NavController
 import com.example.travelapp.R
 import com.example.travelapp.commons.Routes
 import com.example.travelapp.login.presentation.ui.viewmodel.LoginViewModel
+import com.example.travelapp.signup.presentation.ui.screens.ContinueWithComponent
+import com.example.travelapp.signup.presentation.ui.screens.EmailComponent
+import com.example.travelapp.signup.presentation.ui.screens.PasswordComponent
+import com.example.travelapp.signup.presentation.ui.screens.SocialMediaAccount
 
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {

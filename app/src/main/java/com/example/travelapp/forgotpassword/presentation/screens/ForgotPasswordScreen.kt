@@ -1,4 +1,4 @@
-package com.example.travelapp.login.presentation.ui.screens
+package com.example.travelapp.forgotpassword.presentation.screens
 
 import androidx.compose.runtime.Composable
 

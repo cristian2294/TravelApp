@@ -8,13 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.travelapp.commons.Routes
-import com.example.travelapp.login.presentation.ui.screens.ForgotPasswordScreen
+import com.example.travelapp.forgotpassword.presentation.screens.ForgotPasswordScreen
 import com.example.travelapp.login.presentation.ui.screens.HomeScreen
 import com.example.travelapp.login.presentation.ui.screens.LoginScreen
-import com.example.travelapp.login.presentation.ui.screens.SignUpScreen
 import com.example.travelapp.login.presentation.ui.screens.StartScreen
 import com.example.travelapp.login.presentation.ui.viewmodel.LoginViewModel
-import com.example.travelapp.login.presentation.ui.viewmodel.SignUpViewModel
+import com.example.travelapp.signup.presentation.ui.screens.SignUpScreen
+import com.example.travelapp.signup.presentation.ui.viewmodel.SignUpViewModel
 import com.example.travelapp.ui.theme.TravelAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

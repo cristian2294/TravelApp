@@ -1,6 +1,7 @@
 package com.example.travelapp.login.domain.usecase
 
 import android.util.Patterns
+import com.example.travelapp.signup.domain.usecase.MINIMUM_PASSWORD_CHARACTERS
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject

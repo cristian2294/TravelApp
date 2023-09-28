@@ -1,4 +1,4 @@
-package com.example.travelapp.login.presentation.ui.screens
+package com.example.travelapp.signup.presentation.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -52,7 +52,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.example.travelapp.R
 import com.example.travelapp.commons.Routes
-import com.example.travelapp.login.presentation.ui.viewmodel.SignUpViewModel
+import com.example.travelapp.login.presentation.ui.screens.AlreadyHaveAccount
+import com.example.travelapp.signup.presentation.ui.viewmodel.SignUpViewModel
 
 @Composable
 fun SignUpScreen(

@@ -1,4 +1,4 @@
-package com.example.travelapp.login.domain.usecase
+package com.example.travelapp.signup.domain.usecase
 
 import android.util.Patterns
 import com.example.travelapp.login.presentation.model.Customer
