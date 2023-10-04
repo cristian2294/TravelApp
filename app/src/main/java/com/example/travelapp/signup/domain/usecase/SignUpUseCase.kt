@@ -23,7 +23,7 @@ class SignUpUseCase @Inject constructor() {
     ) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
-                registerCustomerInRemoteDb(name, email, password, auth, db)
+                registerCustomerInRemoteDb(name, email, auth, db)
                 navigateToHome()
             } else {
                 showSignUpError()
@@ -34,7 +34,6 @@ class SignUpUseCase @Inject constructor() {
     private fun registerCustomerInRemoteDb(
         name: String,
         email: String,
-        password: String,
         auth: FirebaseAuth,
         db: DatabaseReference,
     ) {
@@ -43,7 +42,6 @@ class SignUpUseCase @Inject constructor() {
             id = customerId.toString(),
             name = name,
             email = email,
-            password = password,
         ).toMap()
 
         db.child(CUSTOMER_REFERENCE).child(customerId!!).setValue(customer)

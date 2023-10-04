@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">TravelApp</string>
 
-    <!-- Start -->
+    <!-- Start Screen-->
     <string name="start.description">are you looking for new adventures?</string>
     <string name="start.button.sign_up">Sign Up</string>
     <string name="start.already_have_account">Already have account?</string>
     <string name="start.already_have_account_login">Log in</string>
     <string name="start.version">V 1.0.0</string>
 
-    <!-- Sign Up -->
+    <!-- Sign Up Screen-->
     <string name="sign_up.title">Sign Up</string>
     <string name="sign_up.outlined_text.name">Name</string>
     <string name="sign_up.outlined_text.email">Email</string>
@@ -16,9 +16,15 @@
     <string name="sign_up.button.create_account">Create Account</string>
     <string name="sign_up.error_dialog_description">An unexpected error has occurred</string>
 
-    <!-- Log In -->
+    <!-- Log In Screen -->
     <string name="login.button">Log In</string>
     <string name="login.forgot_password">Forgot Password?</string>
     <string name="login.error_dialog_description">The email or the password are not correct</string>
 
+    <!-- Forgot Password Screen -->
+    <string name="forgot_password.title">Forgot Password?</string>
+    <string name="forgot_password.description">We just need your registered email \n address to reset your password</string>
+    <string name="forgot_password.button.continue">Continue</string>
+    <string name="forgot_password.message.reset_password_success">A password reset email has been sent</string>
+    <string name="forgot_password.message.reset_password_error">The email is not valid</string>
 </resources>

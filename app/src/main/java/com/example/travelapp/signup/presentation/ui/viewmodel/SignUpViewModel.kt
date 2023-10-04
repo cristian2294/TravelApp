@@ -26,7 +26,7 @@ class SignUpViewModel @Inject constructor(
     private val _isLoginEnabled = MutableLiveData<Boolean>()
     val isLoginEnabled: LiveData<Boolean> get() = _isLoginEnabled
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
+    private val _isLoading = MutableLiveData(false)
 
     fun onSignUpClickListener(
         navigateToHome: () -> Unit,

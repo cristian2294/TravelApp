@@ -8,7 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.travelapp.commons.Routes
-import com.example.travelapp.forgotpassword.presentation.screens.ForgotPasswordScreen
+import com.example.travelapp.forgotpassword.presentation.ui.screens.ForgotPasswordScreen
+import com.example.travelapp.forgotpassword.presentation.ui.viewmodel.ForgotPasswordViewModel
 import com.example.travelapp.login.presentation.ui.screens.HomeScreen
 import com.example.travelapp.login.presentation.ui.screens.LoginScreen
 import com.example.travelapp.login.presentation.ui.screens.StartScreen
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
 
     private val signUpViewModel: SignUpViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
+    private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,7 +48,12 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(route = Routes.HomeScreen.route) { HomeScreen() }
-                    composable(route = Routes.ForgotPasswordScreen.route) { ForgotPasswordScreen() }
+                    composable(route = Routes.ForgotPasswordScreen.route) {
+                        ForgotPasswordScreen(
+                            navController,
+                            forgotPasswordViewModel,
+                        )
+                    }
                 }
                 // When user already logged navigate to homeScreen directly
                 // signUpViewModel.isUserLogged { navController.navigate(Routes.HomeScreen.route) }
