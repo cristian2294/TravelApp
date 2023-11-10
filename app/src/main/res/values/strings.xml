@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">TravelApp</string>
 
+    <!-- Token-->
+    <string name="default_web_client_id">53219785722-sammd2oc4aon0tn8big0ed483nesiirg.apps.googleusercontent.com</string>
+
     <!-- Start Screen-->
     <string name="start.description">are you looking for new adventures?</string>
     <string name="start.button.sign_up">Sign Up</string>

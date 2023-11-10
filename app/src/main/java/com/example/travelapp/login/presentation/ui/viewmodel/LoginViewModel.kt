@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.travelapp.login.domain.usecase.LoginUseCase
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,8 +43,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun onLoginChanged(email: String, password: String) {
+    fun onLoginWithEmailAndPasswordChanged(email: String, password: String) {
         _email.value = email
         _password.value = password
+    }
+
+    fun signInWithGoogleCredential(
+        credential: AuthCredential,
+        navigateToHome: () -> Unit,
+        showLoginError: () -> Unit,
+    ) {
+        viewModelScope.launch {
+            loginUseCase.signInWithGoogleCredential(credential, navigateToHome, showLoginError)
+        }
     }
 }

@@ -32,13 +32,14 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = "start_screen",
+                    startDestination = Routes.StartScreen.route,
                 ) {
                     composable(route = Routes.StartScreen.route) { StartScreen(navController) }
                     composable(route = Routes.SignUpScreen.route) {
                         SignUpScreen(
                             navController,
                             signUpViewModel,
+                            loginViewModel,
                         )
                     }
                     composable(route = Routes.LoginScreen.route) {

@@ -1,10 +1,8 @@
 package com.example.travelapp.signup.presentation.ui.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -53,12 +50,15 @@ import androidx.navigation.NavController
 import com.example.travelapp.R
 import com.example.travelapp.commons.Routes
 import com.example.travelapp.login.presentation.ui.screens.AlreadyHaveAccount
+import com.example.travelapp.login.presentation.ui.screens.SocialMediaAccount
+import com.example.travelapp.login.presentation.ui.viewmodel.LoginViewModel
 import com.example.travelapp.signup.presentation.ui.viewmodel.SignUpViewModel
 
 @Composable
 fun SignUpScreen(
     navController: NavController,
     signUpViewModel: SignUpViewModel,
+    loginViewModel: LoginViewModel,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -93,6 +93,7 @@ fun SignUpScreen(
         )
         BodySignUp(
             signUpViewModel,
+            loginViewModel,
             navController,
             Modifier.constrainAs(containerBody) {
                 top.linkTo(txvTitleScreen.bottom, margin = 48.dp)
@@ -138,6 +139,7 @@ fun TxvTitleScreen(modifier: Modifier) {
 @Composable
 fun BodySignUp(
     signUpViewModel: SignUpViewModel,
+    loginViewModel: LoginViewModel,
     navController: NavController,
     modifier: Modifier,
 ) {
@@ -177,7 +179,7 @@ fun BodySignUp(
         Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_24dp)))
         ContinueWithComponent(modifier)
         Spacer(modifier = modifier.padding(top = dimensionResource(id = R.dimen.dimen_24dp)))
-        SocialMediaAccount(modifier)
+        SocialMediaAccount(modifier, loginViewModel, navController)
     }
 }
 
@@ -357,33 +359,5 @@ fun ContinueWithComponent(modifier: Modifier) {
                 .height(dimensionResource(id = R.dimen.dimen_1dp))
                 .weight(1f),
         )
-    }
-}
-
-@Composable
-fun SocialMediaAccount(modifier: Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimensionResource(id = R.dimen.dimen_24dp)),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        IconButton(
-            onClick = { },
-            modifier = modifier
-                .padding(end = dimensionResource(id = R.dimen.dimen_16dp)),
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_google),
-                contentDescription = "Login with Google",
-            )
-        }
-        IconButton(onClick = { }, modifier = modifier.weight(1f)) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_facebook),
-                contentDescription = "Login with Facebook",
-            )
-        }
     }
 }
